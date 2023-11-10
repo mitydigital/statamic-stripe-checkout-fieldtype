@@ -1,0 +1,26 @@
+<div x-data="{ value: '{{ old ?? mode }}' }">
+
+    {{ if mode_choice === 'yes' }}
+    <div class="space-x-2">
+        <button :class="{
+                    'ring-red-500' : value === 'payment'
+                }"
+                class="rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+                type="button"
+                @click.prevent="value='payment'">
+            {{ 'statamic-stripe-checkout-fieldtype::fieldtype.config.mode.options.payment' | trans }}
+        </button>
+
+        <button :class="{
+                    'ring-red-500' : value === 'subscription'
+                }"
+                class="rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+                type="button"
+                @click.prevent="value='subscription'">
+            {{ 'statamic-stripe-checkout-fieldtype::fieldtype.config.mode.options.subscription' | trans }}
+        </button>
+    </div>
+    {{ /if  }}
+
+    <input name="{{ handle }}" type="hidden" x-model="value">
+</div>

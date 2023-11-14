@@ -1,4 +1,37 @@
-<div x-data="{ value: '{{ old ?? mode }}' }">
+<div x-data="{
+        target: 'value',
+        targetContainer: null,
+        value: '{{ old ?? mode }}',
+
+        init() {
+                // if we're using the alpine driver, the target needs to be the actual
+                // field's handle (i.e. the target passed to the component)
+                if (this.$el.dataset.js === 'alpine') {
+                    this.target = this.$el.dataset.target;
+
+                    if (this.$el.dataset.targetContainer) {
+                        this.targetContainer = this.$el.dataset.targetContainer;
+                    }
+                }
+
+                this.$watch('value', (newValue, oldValue) => {
+                    this.updateTarget(newValue);
+                });
+
+                this.updateTarget(this.value);
+        },
+        updateTarget(value) {
+                if(this.targetContainer) {
+                    this.$data[this.targetContainer][this.target] = value;
+                }
+                else {
+                    this.$data[this.target] = value;
+                }
+            }
+        }"
+     data-js="{{ js_driver }}"
+     data-target-container=""
+     data-target="{{ handle }}">
 
     {{ if mode_choice === 'yes' }}
     <div class="space-x-2">
@@ -20,7 +53,13 @@
             {{ 'statamic-stripe-checkout-fieldtype::fieldtype.config.mode.options.subscription' | trans }}
         </button>
     </div>
-    {{ /if  }}
+    {{ /if }}
 
-    <input name="{{ handle }}" type="hidden" x-model="value">
+    <input id="{{ handle }}"
+           type="hidden"
+           name="{{ handle }}"
+           value="{{ old ?? mode }}"
+           x-ref="value"
+           {{ if js_driver }}{{ js_attributes }}{{ else }}x-model="value" {{ /if }}
+           {{ if validate|contains:required }}required{{ /if }}>
 </div>

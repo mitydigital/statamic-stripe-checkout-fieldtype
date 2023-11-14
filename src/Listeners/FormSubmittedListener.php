@@ -11,7 +11,7 @@ class FormSubmittedListener
 {
     public function handle($event): void
     {
-        // redirect?
+        // does the form have the stripe checkout fieldtype?
         if (StripeCheckoutFieldtype::doesFormHaveStripeCheckout($event->submission->form())) {
             Form::redirect($event->submission->form()->handle(), function (Submission $submission) {
                 return app(StripeService::class)->createCheckoutSession($submission);

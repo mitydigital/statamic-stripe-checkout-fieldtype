@@ -8,7 +8,6 @@
         </testsuite>
     </testsuites>
     <php>
-        <env name="TWO_FACTOR_USER_MODE" value="file"/>
         <env name="APP_ENV" value="testing"/>
         <env name="CACHE_DRIVER" value="array"/>
         <env name="SESSION_DRIVER" value="array"/>
@@ -16,6 +15,10 @@
         <env name="MAIL_DRIVER" value="array"/>
         <env name="DB_CONNECTION" value="sqlite"/>
         <env name="DB_DATABASE" value=":memory:"/>
+        <env name="DB_DATABASE" value=":memory:"/>
+        <env name="STRIPE_KEY" value="stripe_key"/>
+        <env name="STRIPE_SECRET" value="stripe_secret"/>
+        <env name="STRIPE_WEBHOOK_SECRET" value="stripe_webhook_secret"/>
     </php>
     <coverage/>
     <source>

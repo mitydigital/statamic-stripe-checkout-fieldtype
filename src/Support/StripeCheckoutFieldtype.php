@@ -15,7 +15,7 @@ class StripeCheckoutFieldtype
             ->contains(fn (Field $field) => $field->type() === 'stripe_checkout');
     }
 
-    public function getKey()
+    public function getSecret()
     {
         return config('statamic-stripe-checkout-fieldtype.secret');
     }

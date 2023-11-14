@@ -20,7 +20,7 @@ class StripeService
 {
     protected StripeClient $service;
 
-    public function createCheckoutSession(Submission $submission): string
+    public function createCheckoutSession(Submission $submission): bool|string
     {
         $this->getService();
 
@@ -44,7 +44,7 @@ class StripeService
     protected function getService(): StripeClient
     {
         if (! isset($this->service)) {
-            $this->service = new StripeClient(StripeCheckoutFieldtypeFacade::getKey());
+            $this->service = new StripeClient(StripeCheckoutFieldtypeFacade::getSecret());
         }
 
         return $this->service;
@@ -75,7 +75,7 @@ class StripeService
             'mode' => $config->get('mode_choice') === 'yes' ? $data->get($config->handle()) : $config->get('mode'),
             'success_url' => $this->getUrl(
                 $config->get('success_url'),
-                $config->get('success_url_include_session', false)
+                $config->get('success_url_include_session', 'no') === 'yes'
             ),
             'currency' => $config->get('currency_code'),
         ];
@@ -92,7 +92,7 @@ class StripeService
         // handle is a quantity
         foreach ($config->get('prices', []) as $price) {
             $quantity = $data->get($price['handle']);
-            if (is_int($quantity) && $quantity > 0) {
+            if (is_numeric($quantity) && $quantity > 0) {
                 $lineItems[] = [
                     'price_id' => $price['price_id'],
                     'quantity' => $quantity,

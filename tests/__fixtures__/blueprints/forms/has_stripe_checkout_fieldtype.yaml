@@ -1,0 +1,57 @@
+tabs:
+  main:
+    display: Main
+    sections:
+      -
+        fields:
+          -
+            handle: name
+            field:
+              input_type: text
+              antlers: false
+              type: text
+              display: Name
+              icon: text
+              listable: hidden
+              instructions_position: above
+              visibility: visible
+              replicator_preview: true
+              hide_display: false
+          -
+            handle: frequency
+            field:
+              currency_code: AUD
+              mode: payment
+              mode_choice: 'yes'
+              recurring_interval: month
+              recurring_interval_count: 1
+              allow_promotion_codes: 'no'
+              customer_creation: always
+              success_url: 'https://www.mity.com.au'
+              success_url_include_session: 'no'
+              type: stripe_checkout
+              display: Frequency
+              icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path stroke="currentColor" d="M81.084 58.066H31.027L19.549 14.064H6.1V11h15.818l11.478 44.002H78.98l12.06-31.197 2.859 1.103-12.816 33.158z"/><path stroke="currentColor" d="M81.554 68.175H26.615l4.105-12.172 2.91.97-2.746 8.139h50.67v3.063zM70.505 90.018c-4.697 0-8.517-3.82-8.517-8.517 0-4.697 3.82-8.516 8.517-8.516 4.697 0 8.517 3.819 8.517 8.516 0 4.698-3.82 8.517-8.517 8.517zm0-13.97a5.458 5.458 0 0 0-5.453 5.453 5.459 5.459 0 0 0 5.453 5.453c3.002 0 5.453-2.44 5.453-5.453s-2.44-5.453-5.453-5.453zm-35.332 13.97c-4.698 0-8.517-3.82-8.517-8.517 0-4.697 3.82-8.516 8.517-8.516s8.516 3.819 8.516 8.516c0 4.698-3.819 8.517-8.516 8.517zm0-13.97a5.458 5.458 0 0 0-5.453 5.453c0 3.003 2.44 5.453 5.453 5.453s5.453-2.44 5.453-5.453-2.44-5.453-5.453-5.453zm18.646-35.067L43.393 30.555l2.165-2.165 8.261 8.262 16.615-16.615 2.164 2.165-18.779 18.78z"/></svg>'
+              listable: hidden
+              instructions_position: above
+              visibility: visible
+              replicator_preview: true
+              hide_display: false
+              products:
+                -
+                  id: loxrg6yl
+                  product_id: prod_Oyk7eIZVR0Hwag
+                  handle: amount
+          -
+            handle: amount
+            field:
+              input_type: text
+              antlers: false
+              type: text
+              display: Amount
+              icon: text
+              listable: hidden
+              instructions_position: above
+              visibility: visible
+              replicator_preview: true
+              hide_display: false

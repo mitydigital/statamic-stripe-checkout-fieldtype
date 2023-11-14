@@ -46,7 +46,7 @@ class StripeCheckoutFieldtype extends Fieldtype
         if ($this->config('mode_choice') === 'no') {
             return [
                 // force the field to be hidden - it is the developer's job to honour this
-                'hide_display' => 'true',
+                'hide_display' => true,
             ];
         }
 

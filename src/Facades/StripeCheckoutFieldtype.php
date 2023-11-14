@@ -8,7 +8,7 @@ use Statamic\Forms\Form;
 /**
  * @method static bool doesFormHaveStripeCheckout(Form $form)
  * @method static string getCpCurrency()
- * @method static string getKey()
+ * @method static string getSecret()
  *
  * @see StripeCheckoutFieldtype
  */

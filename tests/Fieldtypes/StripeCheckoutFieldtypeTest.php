@@ -2,6 +2,7 @@
 
 use MityDigital\StatamicStripeCheckoutFieldtype\Fieldtypes\StripeCheckoutFieldtype;
 use MityDigital\StatamicStripeCheckoutFieldtype\Tests\MockStripeClient;
+use Statamic\Entries\Entry;
 use Statamic\Facades\Blueprint;
 use Stripe\ApiRequestor;
 
@@ -21,6 +22,76 @@ it('returns the correct view', function () {
     $field = $blueprint->field('frequency');
 
     expect($field->fieldtype()->view())->toBe('statamic-stripe-checkout-fieldtype::forms.fields.stripe_checkout');
+});
+
+//
+// formatNumber
+//
+it('formats numbers', function () {
+    // load the blueprint
+    $blueprint = Blueprint::find('forms/advanced');
+
+    // get the variable number
+    $field = $blueprint->field('frequency');
+
+    expect(callProtectedMethod($field->fieldtype(), 'formatNumber', [1.5]))
+        ->toBe('$1.50')
+        ->and(callProtectedMethod($field->fieldtype(), 'formatNumber', [1.0]))
+        ->toBe('$1.00')
+        ->and(callProtectedMethod($field->fieldtype(), 'formatNumber', [100]))
+        ->toBe('$100.00');
+});
+
+//
+// preProcess
+//
+it('correctly returns an error message if part of a non-form blueprint', function () {
+    // load the blueprint
+    $blueprint = Blueprint::find('collections/pages/article');
+
+    // set the parent
+    $blueprint->setParent(new Entry());
+
+    // get the variable number
+    $field = $blueprint->field('frequency');
+
+    // expect an error array
+    expect($field->fieldtype()->preProcess(1))
+        ->toBeArray()
+        ->toHaveKey('message');
+});
+
+it('returns the language string for view', function () {
+    // load the blueprint
+    $blueprint = Blueprint::find('forms/advanced');
+
+    // get the variable number
+    $field = $blueprint->field('frequency');
+
+    expect($field->fieldtype()->preProcess('payment'))
+        ->toBe(__('statamic-stripe-checkout-fieldtype::fieldtype.config.mode.options.payment'))
+        ->and($field->fieldtype()->preProcess('subscription'))
+        ->toBe(__('statamic-stripe-checkout-fieldtype::fieldtype.config.mode.options.subscription'))
+        ->and($field->fieldtype()->preProcess('something else'))
+        ->toBe('something else');
+});
+
+//
+// preProcessIndex
+//
+it('returns the language string for index', function () {
+    // load the blueprint
+    $blueprint = Blueprint::find('forms/advanced');
+
+    // get the variable number
+    $field = $blueprint->field('frequency');
+
+    expect($field->fieldtype()->preProcessIndex('payment'))
+        ->toBe(__('statamic-stripe-checkout-fieldtype::fieldtype.config.mode.options.payment'))
+        ->and($field->fieldtype()->preProcessIndex('subscription'))
+        ->toBe(__('statamic-stripe-checkout-fieldtype::fieldtype.config.mode.options.subscription'))
+        ->and($field->fieldtype()->preProcessIndex('something else'))
+        ->toBe('something else');
 });
 
 //

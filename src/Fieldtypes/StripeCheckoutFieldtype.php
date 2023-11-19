@@ -34,18 +34,22 @@ class StripeCheckoutFieldtype extends Fieldtype
             ];
         }
 
-        if ($value) {
-            return $this->formatNumber($value);
-        }
+        return match ($value) {
+            'payment' => __('statamic-stripe-checkout-fieldtype::fieldtype.config.mode.options.payment'),
+            'subscription' => __('statamic-stripe-checkout-fieldtype::fieldtype.config.mode.options.subscription'),
+            default => $value
+        };
 
         return $value;
     }
 
-    protected function formatNumber($value)
+    public function preProcessIndex($data)
     {
-        return NumberFormatter::create(Site::current()->locale(), NumberFormatter::CURRENCY)
-            ->formatCurrency($value,
-                \MityDigital\StatamicStripeCheckoutFieldtype\Facades\StripeCheckoutFieldtype::getCpCurrency());
+        return match ($data) {
+            'payment' => __('statamic-stripe-checkout-fieldtype::fieldtype.config.mode.options.payment'),
+            'subscription' => __('statamic-stripe-checkout-fieldtype::fieldtype.config.mode.options.subscription'),
+            default => $data
+        };
     }
 
     public function extraRenderableFieldData(): array
@@ -302,5 +306,12 @@ class StripeCheckoutFieldtype extends Fieldtype
                 'instructions' => __('statamic-stripe-checkout-fieldtype::fieldtype.config.cancel_url.instructions'),
             ],
         ];
+    }
+
+    protected function formatNumber($value)
+    {
+        return NumberFormatter::create(Site::current()->locale(), NumberFormatter::CURRENCY)
+            ->formatCurrency(floatval($value),
+                \MityDigital\StatamicStripeCheckoutFieldtype\Facades\StripeCheckoutFieldtype::getCpCurrency());
     }
 }

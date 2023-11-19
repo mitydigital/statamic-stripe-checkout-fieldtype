@@ -41,6 +41,13 @@ class StripeCheckoutFieldtype extends Fieldtype
         return $value;
     }
 
+    protected function formatNumber($value)
+    {
+        return NumberFormatter::create(Site::current()->locale(), NumberFormatter::CURRENCY)
+            ->formatCurrency($value,
+                \MityDigital\StatamicStripeCheckoutFieldtype\Facades\StripeCheckoutFieldtype::getCpCurrency());
+    }
+
     public function extraRenderableFieldData(): array
     {
         if ($this->config('mode_choice') === 'no') {
@@ -100,9 +107,7 @@ class StripeCheckoutFieldtype extends Fieldtype
                                 $name = $price['name'];
 
                                 // format the currency
-                                $amount = NumberFormatter::create(Site::current()->locale(), NumberFormatter::CURRENCY)
-                                    ->formatCurrency($price['amount'],
-                                        \MityDigital\StatamicStripeCheckoutFieldtype\Facades\StripeCheckoutFieldtype::getCpCurrency());
+                                $amount = $this->formatNumber($price['amount']);
 
                                 // set the name string
                                 if ($name) {

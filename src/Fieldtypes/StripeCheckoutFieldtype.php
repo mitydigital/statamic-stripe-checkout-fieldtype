@@ -83,6 +83,8 @@ class StripeCheckoutFieldtype extends Fieldtype
                     'required',
                     'size:3',
                 ],
+
+                'default' => config('statamic-stripe-checkout-fieldtype.cp_currency'),
             ],
 
             'prices' => [

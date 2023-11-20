@@ -4,6 +4,7 @@ namespace MityDigital\StatamicStripeCheckoutFieldtype\Fieldtypes;
 
 use MityDigital\StatamicStripeCheckoutFieldtype\Support\StripeService;
 use NumberFormatter;
+use RuntimeException;
 use Statamic\Facades\Site;
 use Statamic\Fields\Fieldtype;
 
@@ -39,8 +40,6 @@ class StripeCheckoutFieldtype extends Fieldtype
             'subscription' => __('statamic-stripe-checkout-fieldtype::fieldtype.config.mode.options.subscription'),
             default => $value
         };
-
-        return $value;
     }
 
     public function preProcessIndex($data)
@@ -113,6 +112,7 @@ class StripeCheckoutFieldtype extends Fieldtype
                                 $name = $price['name'];
 
                                 // format the currency
+                                // @todo can be replaced by https://github.com/laravel/framework/pull/48845/files when released
                                 $amount = $this->formatNumber($price['amount']);
 
                                 // set the name string
@@ -312,6 +312,12 @@ class StripeCheckoutFieldtype extends Fieldtype
 
     protected function formatNumber($value)
     {
+        // ensure intl is loaded
+        if (! extension_loaded('intl')) {
+            throw new RuntimeException('The "intl" PHP extension is required to use formatNumber.');
+        }
+
+        // return the formatted number
         return NumberFormatter::create(Site::current()->locale(), NumberFormatter::CURRENCY)
             ->formatCurrency(floatval($value),
                 \MityDigital\StatamicStripeCheckoutFieldtype\Facades\StripeCheckoutFieldtype::getCpCurrency());

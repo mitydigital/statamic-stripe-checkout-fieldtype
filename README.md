@@ -9,7 +9,7 @@
 
 <!-- /statamic:hide -->
 
-> Adds Stripe Checkout support to Forms in Statamic.
+> Adds Stripe Checkout support to frontend Forms in Statamic.
 
 ## Stripe Checkout Fieldtype for Statamic is a Commercial Addon.
 

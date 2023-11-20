@@ -18,6 +18,8 @@ use Stripe\StripeClient;
 
 class StripeService
 {
+    const STRIPE_VERSION = '2023-10-16';
+
     protected StripeClient $service;
 
     public function createCheckoutSession(Submission $submission): bool|string
@@ -44,7 +46,10 @@ class StripeService
     protected function getService(): StripeClient
     {
         if (! isset($this->service)) {
-            $this->service = new StripeClient(StripeCheckoutFieldtypeFacade::getSecret());
+            $this->service = new StripeClient([
+                'api_key' => StripeCheckoutFieldtypeFacade::getSecret(),
+                'stripe_version' => StripeService::STRIPE_VERSION,
+            ]);
         }
 
         return $this->service;

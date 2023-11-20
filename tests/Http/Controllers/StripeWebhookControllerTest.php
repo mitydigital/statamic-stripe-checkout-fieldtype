@@ -33,25 +33,6 @@ it('has the correct middleware', function () {
 
 });
 
-it('listens for the expected events', function () {
-    $events = getPrivateProperty(StripeWebhookController::class, 'events');
-
-    expect($events->getDefaultValue())
-        ->toBeArray()
-        ->toHaveCount(9)
-        ->toMatchArray([
-            'plan.created',
-            'plan.deleted',
-            'plan.updated',
-            'price.created',
-            'price.deleted',
-            'price.updated',
-            'product.created',
-            'product.deleted',
-            'product.updated',
-        ]);
-});
-
 it('clears the cache when a matched event is received', function () {
 
     $service = Mockery::mock(StripeService::class);

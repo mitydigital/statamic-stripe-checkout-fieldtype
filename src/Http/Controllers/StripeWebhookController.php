@@ -10,24 +10,12 @@ use Symfony\Component\HttpFoundation\Response;
 
 class StripeWebhookController extends Controller
 {
-    protected $events = [
-        'plan.created',
-        'plan.deleted',
-        'plan.updated',
-        'price.created',
-        'price.deleted',
-        'price.updated',
-        'product.created',
-        'product.deleted',
-        'product.updated',
-    ];
-
     public function __invoke(Request $request)
     {
         $payload = json_decode($request->getContent(), true);
 
         // if this is one of the events to listen for, clear the cache
-        if (in_array($payload['type'], $this->events)) {
+        if (in_array($payload['type'], StripeService::STRIPE_EVENTS)) {
             // set max retries
             $this->setMaxNetworkRetries();
 

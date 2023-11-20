@@ -257,3 +257,13 @@ it('correctly creates a payload for multiple products and prices', function () {
         ])
         ->and($payload['cancel_url'])->toBe('https://www.mity.com.au/cancel');
 });
+
+it('creates a webhook', function () {
+    // create the webhook
+    $response = $this->support->createWebhook();
+
+    // ensure we are NOT a string, and we are true
+    expect($response)
+        ->not()->toBeString()
+        ->toBeTrue();
+});

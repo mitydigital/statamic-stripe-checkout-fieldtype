@@ -2,6 +2,7 @@
 
 namespace MityDigital\StatamicStripeCheckoutFieldtype;
 
+use MityDigital\StatamicStripeCheckoutFieldtype\Console\Commands\CreateWebhookCommand;
 use MityDigital\StatamicStripeCheckoutFieldtype\Fieldtypes\StripeCheckoutFieldtype;
 use MityDigital\StatamicStripeCheckoutFieldtype\Listeners\FormSubmittedListener;
 use Statamic\Events\FormSubmitted;
@@ -11,6 +12,10 @@ use Statamic\Providers\AddonServiceProvider;
 
 class ServiceProvider extends AddonServiceProvider
 {
+    protected $commands = [
+        CreateWebhookCommand::class,
+    ];
+
     protected $fieldtypes = [
         StripeCheckoutFieldtype::class,
     ];

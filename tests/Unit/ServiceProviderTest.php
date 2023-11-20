@@ -3,6 +3,7 @@
 use MityDigital\StatamicStripeCheckoutFieldtype\Fieldtypes\StripeCheckoutFieldtype;
 use MityDigital\StatamicStripeCheckoutFieldtype\Listeners\FormSubmittedListener;
 use MityDigital\StatamicStripeCheckoutFieldtype\ServiceProvider;
+use MityDigital\StatamicStripeCheckoutFieldtype\Support\StripeService;
 use Statamic\Events\FormSubmitted;
 use Statamic\Facades\Permission;
 
@@ -52,4 +53,26 @@ it('registers the cache permission', function () {
     expect(Permission::get('manage stripe checkout products cache'))
         ->not()->toBeNull()
         ->toBeInstanceOf(\Statamic\Auth\Permission::class);
+});
+
+it('has a stripe version defined', function () {
+    expect(StripeService::STRIPE_VERSION)
+        ->toBe('2023-10-16');
+});
+
+it('listens for the expected events', function () {
+    expect(StripeService::STRIPE_EVENTS)
+        ->toBeArray()
+        ->toHaveCount(9)
+        ->toMatchArray([
+            'plan.created',
+            'plan.deleted',
+            'plan.updated',
+            'price.created',
+            'price.deleted',
+            'price.updated',
+            'product.created',
+            'product.deleted',
+            'product.updated',
+        ]);
 });

@@ -20,6 +20,18 @@ class StripeService
 {
     const STRIPE_VERSION = '2023-10-16';
 
+    const STRIPE_EVENTS = [
+        'plan.created',
+        'plan.deleted',
+        'plan.updated',
+        'price.created',
+        'price.deleted',
+        'price.updated',
+        'product.created',
+        'product.deleted',
+        'product.updated',
+    ];
+
     protected StripeClient $service;
 
     public function createCheckoutSession(Submission $submission): bool|string
@@ -33,11 +45,11 @@ class StripeService
 
             return $checkout['url'];
         } catch (NoLineItemsException $e) {
-            Log::error('StatamicStripeCheckout No Line Items: '.$e->getMessage());
+            Log::error('StatamicStripeCheckout createCheckoutSession No Line Items: '.$e->getMessage());
 
             return false;
         } catch (ApiErrorException $e) {
-            Log::error('StatamicStripeCheckout StripeService API Error: '.$e->getMessage());
+            Log::error('StatamicStripeCheckout createCheckoutSession StripeService API Error: '.$e->getMessage());
 
             return false;
         }
@@ -181,6 +193,34 @@ class StripeService
         }
 
         return $url;
+    }
+
+    public function createWebhook(bool $disabled = false): bool|string
+    {
+        // init the service
+        $this->getService();
+
+        try {
+            // register the webhook
+            $webhook = $this->service->webhookEndpoints->create([
+                'api_version' => StripeService::STRIPE_VERSION,
+                'enabled_events' => StripeService::STRIPE_EVENTS,
+                'url' => route('stripe-checkout-fieldtype.webhook'),
+            ]);
+
+            // if disabled, update it to disable it
+            if ($disabled) {
+                $this->service->webhookEndpoints->update($webhook->id, [
+                    'disabled' => true,
+                ]);
+            }
+
+            return true;
+        } catch (ApiErrorException $e) {
+            Log::error('StatamicStripeCheckout createWebhook StripeService API Error: '.$e->getMessage());
+
+            return $e->getMessage();
+        }
     }
 
     public function clearCache(): void

@@ -99,8 +99,8 @@ return [
         ],
 
         'success_url_include_session' => [
-            'display' => 'Include Session ID with Success URL?',
-            'instructions' => 'When enabled, the Session ID will be included in the Success URL to allow you to personalise the "success" page, if you wish.',
+            'display' => 'Include Checkout Session ID with Success URL?',
+            'instructions' => 'When enabled, the Checkout Session ID will be included in the Success URL to allow you to personalise the "success" page, if you wish.',
 
             'options' => [
                 'no' => 'No',

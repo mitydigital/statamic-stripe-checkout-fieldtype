@@ -1,2 +1,4 @@
-frequency: payment
+frequency:
+  value: payment
+  checkout_session_id: cs_test_a1mteSGlCo3zRlgDMJY5XIP3UgtaUTxRa3ri9sUXKHnJSo5k89254ujefk
 amount: '20'

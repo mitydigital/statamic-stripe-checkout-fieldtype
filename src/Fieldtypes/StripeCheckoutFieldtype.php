@@ -35,6 +35,21 @@ class StripeCheckoutFieldtype extends Fieldtype
             ];
         }
 
+        if (is_array($value) && array_key_exists('value', $value)) {
+            $value['label'] = $this->getLabel($value['value']);
+        } else {
+            $value = [
+                'label' => $this->getLabel($value),
+                'checkout_session_id' => null,
+                'value' => $value,
+            ];
+        }
+
+        return $value;
+    }
+
+    protected function getLabel($value)
+    {
         return match ($value) {
             'payment' => __('statamic-stripe-checkout-fieldtype::fieldtype.config.mode.options.payment'),
             'subscription' => __('statamic-stripe-checkout-fieldtype::fieldtype.config.mode.options.subscription'),
@@ -42,12 +57,23 @@ class StripeCheckoutFieldtype extends Fieldtype
         };
     }
 
+    public function augment($value)
+    {
+        return $this->getLabel($value);
+    }
+
     public function preProcessIndex($data)
     {
-        return match ($data) {
+        // if an array, let's just get the value key
+        $value = $data;
+        if (is_array($value) && array_key_exists('value', $value)) {
+            $value = $value['value'];
+        }
+
+        return match ($value) {
             'payment' => __('statamic-stripe-checkout-fieldtype::fieldtype.config.mode.options.payment'),
             'subscription' => __('statamic-stripe-checkout-fieldtype::fieldtype.config.mode.options.subscription'),
-            default => $data
+            default => $value
         };
     }
 

@@ -68,11 +68,11 @@ it('returns the language string for view', function () {
     // get the variable number
     $field = $blueprint->field('frequency');
 
-    expect($field->fieldtype()->preProcess('payment'))
+    expect(callProtectedMethod($field->fieldtype(), 'getLabel', ['payment']))
         ->toBe(__('statamic-stripe-checkout-fieldtype::fieldtype.config.mode.options.payment'))
-        ->and($field->fieldtype()->preProcess('subscription'))
+        ->and(callProtectedMethod($field->fieldtype(), 'getLabel', ['subscription']))
         ->toBe(__('statamic-stripe-checkout-fieldtype::fieldtype.config.mode.options.subscription'))
-        ->and($field->fieldtype()->preProcess('something else'))
+        ->and(callProtectedMethod($field->fieldtype(), 'getLabel', ['something else']))
         ->toBe('something else');
 });
 

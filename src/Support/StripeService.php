@@ -5,6 +5,7 @@ namespace MityDigital\StatamicStripeCheckoutFieldtype\Support;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Session;
 use MityDigital\StatamicStripeCheckoutFieldtype\Exceptions\FormBlueprintMissingStripeCheckoutException;
 use MityDigital\StatamicStripeCheckoutFieldtype\Exceptions\NoLineItemsException;
 use MityDigital\StatamicStripeCheckoutFieldtype\Facades\StripeCheckoutFieldtype as StripeCheckoutFieldtypeFacade;
@@ -42,6 +43,21 @@ class StripeService
             $payload = $this->buildCheckoutPayloadFromSubmission($submission);
 
             $checkout = $this->service->checkout->sessions->create($payload);
+
+            // save the id with the submission
+            $handle = StripeCheckoutFieldtypeFacade::getStripeCheckoutFieldHandle($submission->form());
+            $value = $submission->data()[$handle];
+
+            if (! is_array($value)) {
+                $value = [
+                    'value' => $payload['mode'],
+                ];
+            }
+            $value['checkout_session_id'] = $checkout['id'];
+            $submission->set($handle, $value)->saveQuietly();
+
+            // save the session id
+            Session::put(StripeCheckoutFieldtypeFacade::getSubmissionSessionKey($checkout['id']), $submission->id());
 
             return $checkout['url'];
         } catch (NoLineItemsException $e) {
@@ -86,10 +102,15 @@ class StripeService
         // get the data
         $data = $submission->data();
 
+        $mode = $data->get($config->handle());
+        if (is_array($mode) && array_key_exists('value', $mode)) {
+            $mode = $mode['value'];
+        }
+
         // build the payload
         $payload = [
             'client_reference_id' => $submission->id(),
-            'mode' => $config->get('mode_choice') === 'yes' ? $data->get($config->handle()) : $config->get('mode'),
+            'mode' => $config->get('mode_choice') === 'yes' ? $mode : $config->get('mode'),
             'success_url' => $this->getUrl(
                 $config->get('success_url'),
                 $config->get('success_url_include_session', 'no') === 'yes'

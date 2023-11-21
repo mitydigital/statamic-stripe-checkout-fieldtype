@@ -42,6 +42,7 @@ class StripeService
         try {
             $payload = $this->buildCheckoutPayloadFromSubmission($submission);
 
+            // create the checkout session
             $checkout = $this->service->checkout->sessions->create($payload);
 
             // save the id with the submission
@@ -116,6 +117,9 @@ class StripeService
                 $config->get('success_url_include_session', 'no') === 'yes'
             ),
             'currency' => $config->get('currency_code'),
+            'metadata' => [
+                'submission' => $submission->id(),
+            ],
         ];
 
         // can only be used in "payment"

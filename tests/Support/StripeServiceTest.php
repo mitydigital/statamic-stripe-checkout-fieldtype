@@ -176,6 +176,43 @@ it('correctly creates a payload for a product', function () {
 
 });
 
+it('correctly creates a payload with the right currency', function () {
+    $form = Form::find('has_stripe_checkout_intl_currency_fieldtype');
+    $submission = $form->submission('1699931909.6729');
+
+    // make sure the submission is real
+    expect($submission)
+        ->not()->toBeNull();
+
+    // get the payload
+    $payload = callProtectedMethod($this->support, 'buildCheckoutPayloadFromSubmission', [$submission]);
+
+    // check we're correct
+    expect($payload)->toHaveKeys([
+        'client_reference_id',
+        'mode',
+        'success_url',
+        'currency',
+        'customer_creation',
+        'line_items',
+    ])
+        ->and($payload['client_reference_id'])->toBe('1699931909.6729')
+        ->and($payload['mode'])->toBe('payment')
+        ->and($payload['success_url'])->toBe('https://www.mity.com.au')
+        ->and($payload['currency'])->toBe('GBP')
+        ->and($payload['customer_creation'])->toBe('always')
+        ->and($payload['line_items'])->toBeArray()->toHaveCount(1)
+        ->and($payload['line_items'][0])->toMatchArray([
+            'price_data' => [
+                'currency' => 'GBP',
+                'product' => 'prod_Oyk7eIZVR0Hwag',
+                'unit_amount' => 2000,
+            ],
+            'quantity' => 1,
+        ]);
+
+});
+
 it('correctly creates a payload for a price', function () {
     $form = Form::find('has_stripe_checkout_fieldtype_price');
     $submission = $form->submission('1699931909.6730');

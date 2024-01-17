@@ -149,7 +149,7 @@ class StripeService
             if (is_numeric($value) && $value > 0) {
                 $lineItem = [
                     'price_data' => [
-                        'currency' => 'AUD',
+                        'currency' => $config->get('currency_code'),
                         'product' => $product['product_id'],
                         'unit_amount' => $value * 100,
                     ],

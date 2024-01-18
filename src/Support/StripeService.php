@@ -136,7 +136,7 @@ class StripeService
             $quantity = $data->get($price['handle']);
             if (is_numeric($quantity) && $quantity > 0) {
                 $lineItems[] = [
-                    'price_id' => $price['price_id'],
+                    'price' => $price['price_id'],
                     'quantity' => $quantity,
                 ];
             }

@@ -240,7 +240,7 @@ it('correctly creates a payload for a price', function () {
         ->and($payload['currency'])->toBe('AUD')
         ->and($payload['line_items'])->toBeArray()->toHaveCount(1)
         ->and($payload['line_items'][0])->toMatchArray([
-            'price_id' => 'price_1OAmdIK5kFGWTVZLRKwoEJZ8',
+            'price' => 'price_1OAmdIK5kFGWTVZLRKwoEJZ8',
             'quantity' => 2,
         ])
         ->and($payload['allow_promotion_codes'])->toBeTrue()
@@ -273,11 +273,11 @@ it('correctly creates a payload for multiple products and prices', function () {
         ->and($payload['currency'])->toBe('AUD')
         ->and($payload['line_items'])->toBeArray()->toHaveCount(3)
         ->and($payload['line_items'][0])->toMatchArray([
-            'price_id' => 'price_1OAmdIK5kFGWTVZLRKwoEJZ8',
+            'price' => 'price_1OAmdIK5kFGWTVZLRKwoEJZ8',
             'quantity' => 2,
         ])
         ->and($payload['line_items'][1])->toMatchArray([
-            'price_id' => 'price_1OAmdIK5kFGWTVZLdoYBToIf',
+            'price' => 'price_1OAmdIK5kFGWTVZLdoYBToIf',
             'quantity' => 3,
         ])
         ->and($payload['line_items'][2])->toMatchArray([

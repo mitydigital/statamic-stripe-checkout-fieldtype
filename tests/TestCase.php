@@ -2,75 +2,23 @@
 
 namespace MityDigital\StatamicStripeCheckoutFieldtype\Tests;
 
-use Facades\Statamic\Version;
 use Illuminate\Encryption\Encrypter;
 use Illuminate\Support\Facades\File;
 use MityDigital\StatamicStripeCheckoutFieldtype\ServiceProvider;
-use Orchestra\Testbench\TestCase as OrchestraTestCase;
-use Statamic\Console\Processes\Composer;
-use Statamic\Extend\Manifest;
 use Statamic\Facades\Blueprint;
-use Statamic\Providers\StatamicServiceProvider;
+use Statamic\Facades\Site;
 use Statamic\Statamic;
+use Statamic\Testing\AddonTestCase;
 
-abstract class TestCase extends OrchestraTestCase
+abstract class TestCase extends AddonTestCase
 {
     protected $shouldFakeVersion = true;
 
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $this->withoutVite();
-
-        if ($this->shouldFakeVersion) {
-            Version::shouldReceive('get')
-                ->andReturn(Composer::create(__DIR__.'/../')->installedVersion(Statamic::PACKAGE));
-        }
-    }
-
-    protected function getPackageProviders($app)
-    {
-        return [
-            StatamicServiceProvider::class,
-            ServiceProvider::class,
-        ];
-    }
-
-    protected function getPackageAliases($app)
-    {
-        return [
-            'Statamic' => Statamic::class,
-        ];
-    }
-
-    protected function getEnvironmentSetUp($app)
-    {
-        parent::getEnvironmentSetUp($app);
-
-        $app->make(Manifest::class)->manifest = [
-            'mitydigital/statamic-stripe-checkout-fieldtype' => [
-                'id' => 'mitydigital/statamic-stripe-checkout-fieldtype',
-                'namespace' => 'MityDigital\\StatamicStripeCheckoutFieldtype',
-            ],
-        ];
-    }
+    protected string $addonServiceProvider = ServiceProvider::class;
 
     protected function resolveApplicationConfiguration($app)
     {
         parent::resolveApplicationConfiguration($app);
-
-        $configs = [
-            'forms',
-            'sites',
-        ];
-
-        foreach ($configs as $config) {
-            $app['config']->set(
-                "statamic.$config",
-                require(__DIR__."/../vendor/statamic/cms/config/{$config}.php")
-            );
-        }
 
         $app['config']->set('app.key', 'base64:'.base64_encode(
             Encrypter::generateKey($app['config']['app.cipher'])
@@ -80,24 +28,15 @@ abstract class TestCase extends OrchestraTestCase
         $app['config']->set('statamic.forms.forms', __DIR__.'/__fixtures__/forms');
 
         // set the submissions folder
-        $app['config']->set('statamic.forms.submissions', __DIR__.'/__fixtures__/storage/forms');
+        $app['config']->set('statamic.forms.submissions', __DIR__.'/__fixtures__/submissions');
 
         // content
-        $app['config']->set('statamic.stache.stores.collections.directory',
-            __DIR__.'/__fixtures__/content/collections');
-        $app['config']->set('statamic.stache.stores.entries.directory',
-            __DIR__.'/__fixtures__/content/collections');
-        $app['config']->set('statamic.stache.stores.collection-trees.directory',
-            __DIR__.'/__fixtures__/content/trees/collections');
-
-        // configure to be an AU site
-        $app['config']->set('statamic.sites.sites.default.locale', 'en_AU');
+        $app['config']->set('statamic.stache.stores.collections.directory', __DIR__.'/__fixtures__/content/collections');
+        $app['config']->set('statamic.stache.stores.entries.directory', __DIR__.'/__fixtures__/content/collections');
+        $app['config']->set('statamic.stache.stores.collection-trees.directory', __DIR__.'/__fixtures__/content/trees/collections');
 
         // build fieldtype config
-        $app['config']->set(
-            'statamic-stripe-checkout-fieldtype',
-            require(__DIR__.'/../config/statamic-stripe-checkout-fieldtype.php')
-        );
+        $app['config']->set('statamic-stripe-checkout-fieldtype', require (__DIR__.'/../config/statamic-stripe-checkout-fieldtype.php'));
 
         $app['config']->set('auth.providers.users.driver', 'statamic');
         $app['config']->set('statamic.editions.pro', true);
@@ -105,6 +44,15 @@ abstract class TestCase extends OrchestraTestCase
 
         Statamic::booted(function () {
             Blueprint::setDirectory(__DIR__.'/__fixtures__/blueprints');
+
+            // configure to be an AU site
+            Site::setSites([
+                'default' => [
+                    'name' => config('app.name'),
+                    'locale' => 'en_AU',
+                    'url' => '/',
+                ],
+            ]);
         });
 
     }

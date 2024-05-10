@@ -178,7 +178,7 @@ it('correctly creates a payload for a product', function () {
 
 it('correctly creates a payload with the right currency', function () {
     $form = Form::find('has_stripe_checkout_intl_currency_fieldtype');
-    $submission = $form->submission('1699931909.6729');
+    $submission = $form->submission('1699931909.6731');
 
     // make sure the submission is real
     expect($submission)
@@ -196,7 +196,7 @@ it('correctly creates a payload with the right currency', function () {
         'customer_creation',
         'line_items',
     ])
-        ->and($payload['client_reference_id'])->toBe('1699931909.6729')
+        ->and($payload['client_reference_id'])->toBe('1699931909.6731')
         ->and($payload['mode'])->toBe('payment')
         ->and($payload['success_url'])->toBe('https://www.mity.com.au')
         ->and($payload['currency'])->toBe('GBP')
@@ -215,7 +215,7 @@ it('correctly creates a payload with the right currency', function () {
 
 it('correctly creates a payload for a price', function () {
     $form = Form::find('has_stripe_checkout_fieldtype_price');
-    $submission = $form->submission('1699931909.6730');
+    $submission = $form->submission('1699931909.6732');
 
     // make sure the submission is real
     expect($submission)
@@ -234,7 +234,7 @@ it('correctly creates a payload for a price', function () {
         'allow_promotion_codes',
         'cancel_url',
     ])
-        ->and($payload['client_reference_id'])->toBe('1699931909.6730')
+        ->and($payload['client_reference_id'])->toBe('1699931909.6732')
         ->and($payload['mode'])->toBe('subscription')
         ->and($payload['success_url'])->toBe('https://www.mity.com.au')
         ->and($payload['currency'])->toBe('AUD')

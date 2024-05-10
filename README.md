@@ -2,7 +2,7 @@
 
 <!-- statamic:hide -->
 
-![Statamic 4+](https://img.shields.io/badge/Statamic-4+-FF269E?style=for-the-badge&link=https://statamic.com)
+![Statamic 5.0](https://img.shields.io/badge/Statamic-5.0-FF269E?style=for-the-badge&link=https://statamic.com)
 [![Stripe Checkout Fieldtype for Statamic Forms on Packagist](https://img.shields.io/packagist/v/mitydigital/statamic-stripe-checkout-fieldtype?style=for-the-badge)](https://packagist.org/packages/mitydigital/statamic-stripe-checkout-fieldtype/stats)
 
 ---

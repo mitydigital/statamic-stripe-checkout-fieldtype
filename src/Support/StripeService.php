@@ -13,6 +13,7 @@ use Statamic\Facades\Data;
 use Statamic\Facades\URL;
 use Statamic\Fields\Field;
 use Statamic\Forms\Submission;
+use Statamic\Support\Arr;
 use Statamic\Support\Str;
 use Stripe\Exception\ApiErrorException;
 use Stripe\StripeClient;
@@ -135,10 +136,28 @@ class StripeService
         foreach ($config->get('prices', []) as $price) {
             $quantity = (int) $data->get($price['handle']);
             if (is_int($quantity) && $quantity > 0) {
-                $lineItems[] = [
+                $lineItem = [
                     'price' => $price['price_id'],
                     'quantity' => $quantity,
                 ];
+
+                if (Arr::get($price, 'adjustable_quantity', false)) {
+                    $adjustableQuantity = [
+                        'enabled' => true,
+                    ];
+
+                    if (Arr::get($price, 'adjustable_quantity_minimum', null)) {
+                        $adjustableQuantity['minimum'] = $price['adjustable_quantity_minimum'];
+                    }
+
+                    if (Arr::get($price, 'adjustable_quantity_maximum', null)) {
+                        $adjustableQuantity['maximum'] = $price['adjustable_quantity_maximum'];
+                    }
+
+                    $lineItem['adjustable_quantity'] = $adjustableQuantity;
+                }
+
+                $lineItems[] = $lineItem;
             }
         }
 
@@ -162,6 +181,22 @@ class StripeService
                         'interval' => $config->get('recurring_interval', 'month'),
                         'interval_count' => $config->get('recurring_interval_count', 1),
                     ];
+                }
+
+                if (Arr::get($product, 'adjustable_quantity', false)) {
+                    $adjustableQuantity = [
+                        'enabled' => true,
+                    ];
+
+                    if (Arr::get($product, 'adjustable_quantity_minimum', null)) {
+                        $adjustableQuantity['minimum'] = $product['adjustable_quantity_minimum'];
+                    }
+
+                    if (Arr::get($product, 'adjustable_quantity_maximum', null)) {
+                        $adjustableQuantity['maximum'] = $product['adjustable_quantity_maximum'];
+                    }
+
+                    $lineItem['adjustable_quantity'] = $adjustableQuantity;
                 }
 
                 $lineItems[] = $lineItem;

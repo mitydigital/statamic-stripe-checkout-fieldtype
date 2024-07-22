@@ -111,12 +111,12 @@ class StripeService
         // build the payload
         $payload = [
             'client_reference_id' => $submission->id(),
-            'mode' => $config->get('mode_choice') === 'yes' ? $mode : $config->get('mode'),
+            'mode' => $config->get('mode_choice', 'yes') === 'yes' ? ($mode ?? 'payment') : $config->get('mode', 'payment'),
             'success_url' => $this->getUrl(
                 $config->get('success_url'),
                 $config->get('success_url_include_session', 'no') === 'yes'
             ),
-            'currency' => $config->get('currency_code'),
+            'currency' => $config->get('currency_code', config('statamic-stripe-checkout-fieldtype.cp_currency')),
             'metadata' => [
                 'submission' => $submission->id(),
             ],
@@ -124,7 +124,7 @@ class StripeService
 
         // can only be used in "payment"
         if ($payload['mode'] === 'payment') {
-            $payload['customer_creation'] = $config->get('customer_creation');
+            $payload['customer_creation'] = $config->get('customer_creation', 'always');
         }
 
         // line_items
@@ -175,7 +175,7 @@ class StripeService
         }
 
         // allow_promotion_codes
-        if ($config->get('allow_promotion_codes') === 'yes') {
+        if ($config->get('allow_promotion_codes', 'no') === 'yes') {
             $payload['allow_promotion_codes'] = true;
         }
 

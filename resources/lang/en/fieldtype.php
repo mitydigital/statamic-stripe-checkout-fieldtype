@@ -12,11 +12,11 @@ return [
 
         'prices' => [
             'display' => 'Prices',
-            'instructions' => 'Creating a Price association uses the defined price for the line item in Stripe.<br><br>When the "Quantity Handle" field has a positive integer value, it will be sent to Stripe.',
+            'instructions' => 'Creating a Price association uses the defined price for the line item in Stripe.<br><br>The "Quantity Field Handle" is the field in your Blueprint that will be the quantity of this Price to send to Stripe.<br><br>When the "Quantity Field Handle" field has a positive integer value, it will be sent to Stripe.',
 
             'fields' => [
                 'price_id' => 'Stripe Price ID',
-                'handle' => 'Quantity Handle',
+                'handle' => 'Quantity Field Handle',
             ],
 
             'add_row' => 'Add Price',
@@ -24,11 +24,11 @@ return [
 
         'products' => [
             'display' => 'Products',
-            'instructions' => 'Creating a Price association uses the defined price for the line item in Stripe.<br><br>When the "Value Handle" field has a positive numeric value, it will be sent to Stripe as a new Price object for the Product, with a set quantity of 1.',
+            'instructions' => 'Creating a Price association uses the defined price for the line item in Stripe.<br><br>The "Value Field Handle" field is the field in your Blueprint that will be the value of this Product to send to Stripe.<br><br>When the "Value Field Handle" field has a positive numeric value, it will be sent to Stripe as a new Price object for the Product, with a set quantity of 1.',
 
             'fields' => [
                 'product_id' => 'Stripe Product ID',
-                'handle' => 'Value Handle',
+                'handle' => 'Value Field Handle',
             ],
 
             'add_row' => 'Add Product',

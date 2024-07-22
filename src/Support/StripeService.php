@@ -133,8 +133,8 @@ class StripeService
         // prices
         // handle is a quantity
         foreach ($config->get('prices', []) as $price) {
-            $quantity = $data->get($price['handle']);
-            if (is_numeric($quantity) && $quantity > 0) {
+            $quantity = (int) $data->get($price['handle']);
+            if (is_int($quantity) && $quantity > 0) {
                 $lineItems[] = [
                     'price' => $price['price_id'],
                     'quantity' => $quantity,
@@ -145,11 +145,11 @@ class StripeService
         // products
         // handle is a value, quantity always 1
         foreach ($config->get('products', []) as $product) {
-            $value = $data->get($product['handle']);
+            $value = (float) $data->get($product['handle']);
             if (is_numeric($value) && $value > 0) {
                 $lineItem = [
                     'price_data' => [
-                        'currency' => $config->get('currency_code'),
+                        'currency' => $config->get('currency_code', config('statamic-stripe-checkout-fieldtype.cp_currency')),
                         'product' => $product['product_id'],
                         'unit_amount' => $value * 100,
                     ],

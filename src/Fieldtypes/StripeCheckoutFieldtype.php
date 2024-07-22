@@ -162,6 +162,52 @@ class StripeCheckoutFieldtype extends Fieldtype
                             'display' => __('statamic-stripe-checkout-fieldtype::fieldtype.config.prices.fields.handle'),
                         ],
                     ],
+                    [
+                        'handle' => 'adjustable_quantity',
+                        'field' => [
+                            'width' => 100,
+                            'type' => 'toggle',
+                            'hide_display' => true,
+                            'inline_label' => __('statamic-stripe-checkout-fieldtype::fieldtype.config.prices.fields.adjustable_quantity'),
+                            'inline_label_when_true' => __('statamic-stripe-checkout-fieldtype::fieldtype.config.prices.fields.adjustable_quantity_true'),
+                        ],
+                    ],
+                    [
+                        'handle' => 'adjustable_quantity_minimum',
+                        'field' => [
+                            'width' => 50,
+                            'type' => 'text',
+                            'input_type' => 'number',
+                            'placeholder' => '0',
+                            'display' => __('statamic-stripe-checkout-fieldtype::fieldtype.config.prices.fields.adjustable_quantity_minimum'),
+                            'if' => [
+                                'adjustable_quantity' => 'equals true',
+                            ],
+                            'validate' => [
+                                'integer',
+                                'min:0',
+                                'max:99999',
+                            ],
+                        ],
+                    ],
+                    [
+                        'handle' => 'adjustable_quantity_maximum',
+                        'field' => [
+                            'width' => 50,
+                            'type' => 'text',
+                            'input_type' => 'number',
+                            'placeholder' => '99',
+                            'display' => __('statamic-stripe-checkout-fieldtype::fieldtype.config.prices.fields.adjustable_quantity_maximum'),
+                            'if' => [
+                                'adjustable_quantity' => 'equals true',
+                            ],
+                            'validate' => [
+                                'integer',
+                                'min:1',
+                                'max:99999',
+                            ],
+                        ],
+                    ],
                 ],
             ],
 
@@ -195,6 +241,52 @@ class StripeCheckoutFieldtype extends Fieldtype
                             'width' => 33,
                             'type' => 'text',
                             'display' => __('statamic-stripe-checkout-fieldtype::fieldtype.config.products.fields.handle'),
+                        ],
+                    ],
+                    [
+                        'handle' => 'adjustable_quantity',
+                        'field' => [
+                            'width' => 100,
+                            'type' => 'toggle',
+                            'hide_display' => true,
+                            'inline_label' => __('statamic-stripe-checkout-fieldtype::fieldtype.config.prices.fields.adjustable_quantity'),
+                            'inline_label_when_true' => __('statamic-stripe-checkout-fieldtype::fieldtype.config.prices.fields.adjustable_quantity_true'),
+                        ],
+                    ],
+                    [
+                        'handle' => 'adjustable_quantity_minimum',
+                        'field' => [
+                            'width' => 50,
+                            'type' => 'text',
+                            'input_type' => 'number',
+                            'placeholder' => '0',
+                            'display' => __('statamic-stripe-checkout-fieldtype::fieldtype.config.prices.fields.adjustable_quantity_minimum'),
+                            'if' => [
+                                'adjustable_quantity' => 'equals true',
+                            ],
+                            'validate' => [
+                                'integer',
+                                'min:0',
+                                'max:99999',
+                            ],
+                        ],
+                    ],
+                    [
+                        'handle' => 'adjustable_quantity_maximum',
+                        'field' => [
+                            'width' => 50,
+                            'type' => 'text',
+                            'input_type' => 'number',
+                            'placeholder' => '99',
+                            'display' => __('statamic-stripe-checkout-fieldtype::fieldtype.config.prices.fields.adjustable_quantity_maximum'),
+                            'if' => [
+                                'adjustable_quantity' => 'equals true',
+                            ],
+                            'validate' => [
+                                'integer',
+                                'min:1',
+                                'max:99999',
+                            ],
                         ],
                     ],
                 ],

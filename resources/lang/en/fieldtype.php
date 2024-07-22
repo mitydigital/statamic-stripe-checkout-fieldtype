@@ -17,6 +17,10 @@ return [
             'fields' => [
                 'price_id' => 'Stripe Price ID',
                 'handle' => 'Quantity Field Handle',
+                'adjustable_quantity' => 'Do not allow adjustable Stripe Checkout quantity',
+                'adjustable_quantity_true' => 'Yes, allow adjustable Stripe Checkout quantity',
+                'adjustable_quantity_minimum' => 'Minimum',
+                'adjustable_quantity_maximum' => 'Maximum',
             ],
 
             'add_row' => 'Add Price',

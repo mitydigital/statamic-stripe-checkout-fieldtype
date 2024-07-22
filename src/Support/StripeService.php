@@ -175,6 +175,11 @@ class StripeService
                     'quantity' => 1,
                 ];
 
+                // set quantity
+                if (Arr::get($product, 'has_quantity', 1) === 'field') {
+                    $lineItem['quantity'] = (int) $data->get(Arr::get($product, 'handle_quantity', 1));
+                }
+
                 // if subscription, set price up to be recurring monthly
                 if ($payload['mode'] === 'subscription') {
                     $lineItem['price_data']['recurring'] = [
@@ -183,6 +188,7 @@ class StripeService
                     ];
                 }
 
+                // set adjustable quantity
                 if (Arr::get($product, 'adjustable_quantity', false)) {
                     $adjustableQuantity = [
                         'enabled' => true,

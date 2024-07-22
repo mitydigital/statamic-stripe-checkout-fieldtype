@@ -169,7 +169,6 @@ class StripeCheckoutFieldtype extends Fieldtype
                             'type' => 'toggle',
                             'hide_display' => true,
                             'inline_label' => __('statamic-stripe-checkout-fieldtype::fieldtype.config.prices.fields.adjustable_quantity'),
-                            'inline_label_when_true' => __('statamic-stripe-checkout-fieldtype::fieldtype.config.prices.fields.adjustable_quantity_true'),
                         ],
                     ],
                     [
@@ -244,13 +243,38 @@ class StripeCheckoutFieldtype extends Fieldtype
                         ],
                     ],
                     [
+                        'handle' => 'has_quantity',
+                        'field' => [
+                            'width' => 66,
+                            'type' => 'select',
+                            'taggable' => false,
+                            'display' => __('statamic-stripe-checkout-fieldtype::fieldtype.config.products.fields.has_quantity'),
+                            'validate' => ['required'],
+                            'default' => '1',
+                            'options' => [
+                                '1' => __('statamic-stripe-checkout-fieldtype::fieldtype.config.products.fields.has_quantity_1'),
+                                'field' => __('statamic-stripe-checkout-fieldtype::fieldtype.config.products.fields.has_quantity_field'),
+                            ],
+                        ],
+                    ],
+                    [
+                        'handle' => 'handle_quantity',
+                        'field' => [
+                            'width' => 33,
+                            'type' => 'text',
+                            'display' => __('statamic-stripe-checkout-fieldtype::fieldtype.config.products.fields.handle_quantity'),
+                            'if' => [
+                                'has_quantity' => 'equals field',
+                            ],
+                        ],
+                    ],
+                    [
                         'handle' => 'adjustable_quantity',
                         'field' => [
                             'width' => 100,
                             'type' => 'toggle',
                             'hide_display' => true,
                             'inline_label' => __('statamic-stripe-checkout-fieldtype::fieldtype.config.prices.fields.adjustable_quantity'),
-                            'inline_label_when_true' => __('statamic-stripe-checkout-fieldtype::fieldtype.config.prices.fields.adjustable_quantity_true'),
                         ],
                     ],
                     [

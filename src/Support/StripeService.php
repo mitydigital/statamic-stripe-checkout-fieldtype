@@ -258,7 +258,7 @@ class StripeService
             }
         }
 
-        return $url;
+        return URL::makeAbsolute($url);
     }
 
     public function createWebhook(bool $disabled = false): bool|string

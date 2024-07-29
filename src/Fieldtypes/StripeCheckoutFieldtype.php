@@ -118,7 +118,7 @@ class StripeCheckoutFieldtype extends Fieldtype
                 'reorderable' => true,
                 'fullscreen' => false,
                 'type' => 'grid',
-                'max_rows' => 10,
+                'max_rows' => 20,
                 'display' => __('statamic-stripe-checkout-fieldtype::fieldtype.config.prices.display'),
                 'instructions' => __('statamic-stripe-checkout-fieldtype::fieldtype.config.prices.instructions'),
 
@@ -216,7 +216,7 @@ class StripeCheckoutFieldtype extends Fieldtype
                 'reorderable' => true,
                 'fullscreen' => false,
                 'type' => 'grid',
-                'max_rows' => 10,
+                'max_rows' => 20,
                 'display' => __('statamic-stripe-checkout-fieldtype::fieldtype.config.products.display'),
                 'instructions' => __('statamic-stripe-checkout-fieldtype::fieldtype.config.products.instructions'),
 

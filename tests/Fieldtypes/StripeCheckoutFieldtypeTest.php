@@ -7,7 +7,7 @@ use Statamic\Facades\Blueprint;
 use Stripe\ApiRequestor;
 
 beforeEach(function () {
-    ApiRequestor::setHttpClient(new MockStripeClient());
+    ApiRequestor::setHttpClient(new MockStripeClient);
     $this->fieldtype = app(StripeCheckoutFieldtype::class);
 });
 
@@ -50,7 +50,7 @@ it('correctly returns an error message if part of a non-form blueprint', functio
     $blueprint = Blueprint::find('collections/pages/article');
 
     // set the parent
-    $blueprint->setParent(new Entry());
+    $blueprint->setParent(new Entry);
 
     // get the variable number
     $field = $blueprint->field('frequency');

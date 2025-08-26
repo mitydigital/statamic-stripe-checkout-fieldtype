@@ -21,7 +21,7 @@ it('is ok when secret matches', function () {
     // set headers
     $this->request->headers->set('Stripe-Signature', 't='.$timestamp.',v1='.$signature);
 
-    $response = (new VerifyWebhookSignature())
+    $response = (new VerifyWebhookSignature)
         ->handle($this->request, function ($request) {
             return new Response('OK');
         });
@@ -37,7 +37,7 @@ it('is ok when time is within tolerance', function () {
     // set headers
     $this->request->headers->set('Stripe-Signature', 't='.$timestamp.',v1='.$signature);
 
-    $response = (new VerifyWebhookSignature())
+    $response = (new VerifyWebhookSignature)
         ->handle($this->request, function ($request) {
             return new Response('OK');
         });
@@ -53,9 +53,8 @@ it('aborts when timestamp is too old', function () {
     // set headers
     $this->request->headers->set('Stripe-Signature', 't='.$timestamp.',v1='.$signature);
 
-    $response = (new VerifyWebhookSignature())
-        ->handle($this->request, function ($request) {
-        });
+    $response = (new VerifyWebhookSignature)
+        ->handle($this->request, function ($request) {});
 })->throws(AccessDeniedHttpException::class);
 
 it('aborts when secret does not match', function () {
@@ -66,9 +65,8 @@ it('aborts when secret does not match', function () {
     // set headers
     $this->request->headers->set('Stripe-Signature', 't='.$timestamp.',v1='.$signature);
 
-    $response = (new VerifyWebhookSignature())
-        ->handle($this->request, function ($request) {
-        });
+    $response = (new VerifyWebhookSignature)
+        ->handle($this->request, function ($request) {});
 })->throws(AccessDeniedHttpException::class);
 
 it('aborts when there is no secret', function () {
@@ -79,7 +77,6 @@ it('aborts when there is no secret', function () {
     // set headers
     $this->request->headers->set('Stripe-Signature', 't='.$timestamp.',v1='.$signature);
 
-    $response = (new VerifyWebhookSignature())
-        ->handle($this->request, function ($request) {
-        });
+    $response = (new VerifyWebhookSignature)
+        ->handle($this->request, function ($request) {});
 })->throws(AccessDeniedHttpException::class);

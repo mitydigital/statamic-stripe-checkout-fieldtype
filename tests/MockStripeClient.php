@@ -13,8 +13,7 @@ class MockStripeClient implements ClientInterface
 
     public function __construct(
         private string $rbody = '{}',
-    ) {
-    }
+    ) {}
 
     /**
      * {@inheritDoc}

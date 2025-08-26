@@ -98,7 +98,7 @@ class StripeService
 
         // if there is no config, then there's no fieldtype used
         if (! $config) {
-            throw new FormBlueprintMissingStripeCheckoutException();
+            throw new FormBlueprintMissingStripeCheckoutException;
         }
 
         // get the data
@@ -212,7 +212,7 @@ class StripeService
         $payload['line_items'] = $lineItems;
 
         if (empty($lineItems)) {
-            throw new NoLineItemsException();
+            throw new NoLineItemsException;
         }
 
         // allow_promotion_codes

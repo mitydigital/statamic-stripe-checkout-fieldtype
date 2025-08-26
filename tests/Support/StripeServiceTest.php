@@ -10,7 +10,7 @@ use Stripe\ApiRequestor;
 use Stripe\StripeClient;
 
 beforeEach(function () {
-    ApiRequestor::setHttpClient(new MockStripeClient());
+    ApiRequestor::setHttpClient(new MockStripeClient);
 
     $this->support = app(StripeService::class);
 });

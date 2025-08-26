@@ -44,7 +44,7 @@ class ServiceProvider extends AddonServiceProvider
         // set up the facade
         //
         $this->app->bind('StripeCheckoutFieldtype', function () {
-            return new Support\StripeCheckoutFieldtype();
+            return new Support\StripeCheckoutFieldtype;
         });
 
         // views
